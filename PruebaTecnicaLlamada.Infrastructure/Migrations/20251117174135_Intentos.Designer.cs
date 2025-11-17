@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PruebaTecnicaLlamada.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using PruebaTecnicaLlamada.Infrastructure.Persistence;
 namespace PruebaTecnicaLlamada.Infrastructure.Migrations
 {
     [DbContext(typeof(PruebaTecnicaLlamadaDbContext))]
-    partial class PruebaTecnicaLlamadaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251117174135_Intentos")]
+    partial class Intentos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

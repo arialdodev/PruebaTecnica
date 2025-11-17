@@ -12,6 +12,7 @@ namespace PruebaTecnicaLlamada.Infrastructure.Persistence
         }
 
         public DbSet<Deportista> Deportistas => Set<Deportista>();
+        public DbSet<Intentos> Intentos => Set<Intentos>();
 
     }
 }

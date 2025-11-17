@@ -14,5 +14,8 @@ namespace PruebaTecnicaLlamada.Domain.AggregateModel.AggregateDeportista
             Pais = pais;
             Name = name;
         }
+
+        public ICollection<Intentos> Intentos { get; private set; } = [];
+
     }
 }
