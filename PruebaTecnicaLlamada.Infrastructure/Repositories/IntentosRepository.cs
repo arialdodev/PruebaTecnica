@@ -3,31 +3,36 @@ using PruebaTecnicaLlamada.Domain.AggregateModel.AggregateDeportista;
 using PruebaTecnicaLlamada.Domain.Commond;
 using PruebaTecnicaLlamada.Domain.SeedWork;
 using PruebaTecnicaLlamada.Infrastructure.Persistence;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PruebaTecnicaLlamada.Infrastructure.Repositories
 {
-    public class DeportistaRepository : IRepository<Deportista>
+    public class IntentosRepository : IRepository<Intentos>
     {
         public readonly PruebaTecnicaLlamadaDbContext _pruebaTecnicaLlamadaDbContext;
 
-        public DeportistaRepository(PruebaTecnicaLlamadaDbContext pruebaTecnicaLlamadaDbContext)
+        public IntentosRepository(PruebaTecnicaLlamadaDbContext pruebaTecnicaLlamadaDbContext)
         {
             _pruebaTecnicaLlamadaDbContext = pruebaTecnicaLlamadaDbContext;
         }
 
-        public async Task<Result<bool>> Create(Deportista entity)
+        public async Task<Result<bool>> Create(Intentos entity)
         {
-            await _pruebaTecnicaLlamadaDbContext.Deportistas.AddAsync(entity);
+            await _pruebaTecnicaLlamadaDbContext.Intentos.AddAsync(entity);
             await _pruebaTecnicaLlamadaDbContext.SaveChangesAsync();
             return Result<bool>.Success(true);
         }
 
-        public async Task<Result<List<Deportista>>> GetAll(int? deportistaId)
+        public async Task<Result<List<Intentos>>> GetAll(int? deportistaId)
         {
             try
             {
-                IQueryable<Deportista> query = _pruebaTecnicaLlamadaDbContext.Deportistas
-                    .Include(d => d.Intentos);
+                IQueryable<Intentos> query = _pruebaTecnicaLlamadaDbContext.Intentos
+                    .Include(d => d.Id);
 
                 if (deportistaId.HasValue)
                 {
@@ -36,13 +41,12 @@ namespace PruebaTecnicaLlamada.Infrastructure.Repositories
 
                 var deportistaList = await query.ToListAsync();
 
-                return Result<List<Deportista>>.Success(deportistaList);
+                return Result<List<Intentos>>.Success(deportistaList);
             }
             catch (Exception ex)
             {
-                return Result<List<Deportista>>.Failure($"Error al obtener deportistas: {ex.Message}", ErrorType.NotFound);
+                return Result<List<Intentos>>.Failure($"Error al obtener deportistas: {ex.Message}", ErrorType.NotFound);
             }
         }
-
     }
 }
