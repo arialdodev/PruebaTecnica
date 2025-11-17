@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using PruebaTecnicaLlamada.Domain.AggregateModel.AggregateDeportista;
+using PruebaTecnicaLlamada.Domain.Commond;
 using PruebaTecnicaLlamada.Domain.SeedWork;
 
 namespace PruebaTecnicaLlamada.Api.Commands
 {
-    public class DeportistaCreateCommandHandler : IRequestHandler<DeportistaCreateCommand, bool>
+    public class DeportistaCreateCommandHandler : IRequestHandler<DeportistaCreateCommand, Result<bool>>
     {
         public readonly IRepository<Deportista> _deportistaRepository;
         public readonly ILogger<Deportista> _logger;
@@ -15,7 +16,7 @@ namespace PruebaTecnicaLlamada.Api.Commands
             _logger = logger;
         }
 
-        public async Task<bool> Handle(DeportistaCreateCommand request, CancellationToken cancellationToken)
+        public async Task<Result<bool>> Handle(DeportistaCreateCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("📝 Recibido comando para crear ResourceType: {TypeName}", request.DeportistaCreateDto.Name);
 

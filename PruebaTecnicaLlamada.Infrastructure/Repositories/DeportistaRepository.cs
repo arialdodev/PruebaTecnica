@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PruebaTecnicaLlamada.Domain.AggregateModel.AggregateDeportista;
+using PruebaTecnicaLlamada.Domain.Commond;
 using PruebaTecnicaLlamada.Domain.SeedWork;
 using PruebaTecnicaLlamada.Infrastructure.Persistence;
 
@@ -14,28 +15,34 @@ namespace PruebaTecnicaLlamada.Infrastructure.Repositories
             _pruebaTecnicaLlamadaDbContext = pruebaTecnicaLlamadaDbContext;
         }
 
-        public async Task<bool> Create(Deportista entity)
+        public async Task<Result<bool>> Create(Deportista entity)
         {
             await _pruebaTecnicaLlamadaDbContext.Deportistas.AddAsync(entity);
             await _pruebaTecnicaLlamadaDbContext.SaveChangesAsync();
-            return true;
+            return Result<bool>.Success(true);
         }
 
-        public async Task<List<Deportista>> GetAll(int? deportistaId)
+        public async Task<Result<List<Deportista>>> GetAll(int? deportistaId)
         {
-            if (deportistaId.HasValue)
+            try
             {
-                return await _pruebaTecnicaLlamadaDbContext.Deportistas
-                    .Where(d => d.Id == deportistaId.Value)
-                    .ToListAsync();
+                IQueryable<Deportista> query = _pruebaTecnicaLlamadaDbContext.Deportistas
+                    .Include(d => d.Intentos); // Trae también los intentos
+
+                if (deportistaId.HasValue)
+                {
+                    query = query.Where(d => d.Id == deportistaId.Value);
+                }
+
+                var deportistaList = await query.ToListAsync();
+
+                return Result<List<Deportista>>.Success(deportistaList);
             }
-            else
+            catch (Exception ex)
             {
-                return await _pruebaTecnicaLlamadaDbContext.Deportistas
-                    .ToListAsync();
+                return Result<List<Deportista>>.Failure($"Error al obtener deportistas: {ex.Message}", ErrorType.NotFound);
             }
         }
-
 
     }
 }
