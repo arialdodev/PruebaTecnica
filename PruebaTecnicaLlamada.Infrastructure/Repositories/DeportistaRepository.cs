@@ -1,4 +1,5 @@
-﻿using PruebaTecnicaLlamada.Domain.AggregateModel.AggregateDeportista;
+﻿using Microsoft.EntityFrameworkCore;
+using PruebaTecnicaLlamada.Domain.AggregateModel.AggregateDeportista;
 using PruebaTecnicaLlamada.Domain.SeedWork;
 using PruebaTecnicaLlamada.Infrastructure.Persistence;
 
@@ -19,5 +20,22 @@ namespace PruebaTecnicaLlamada.Infrastructure.Repositories
             await _pruebaTecnicaLlamadaDbContext.SaveChangesAsync();
             return true;
         }
+
+        public async Task<List<Deportista>> GetAll(int? deportistaId)
+        {
+            if (deportistaId.HasValue)
+            {
+                return await _pruebaTecnicaLlamadaDbContext.Deportistas
+                    .Where(d => d.Id == deportistaId.Value)
+                    .ToListAsync();
+            }
+            else
+            {
+                return await _pruebaTecnicaLlamadaDbContext.Deportistas
+                    .ToListAsync();
+            }
+        }
+
+
     }
 }

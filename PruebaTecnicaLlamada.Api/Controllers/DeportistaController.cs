@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PruebaTecnicaLlamada.Api.Commands;
 using PruebaTecnicaLlamada.Api.Dto;
+using PruebaTecnicaLlamada.Api.Queries;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,6 +25,15 @@ namespace PruebaTecnicaLlamada.Api.Controllers
             var command = new DeportistaCreateCommand(deportistaCreateDto);
             var result = await _mediator.Send(command);
             return StatusCode(200, result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll(int? deportistaId)
+        {
+            var query = new DeportistaGetAllListQuery(deportistaId);
+            var result = await _mediator.Send(query);
+            return StatusCode(200, result);
+
         }
     }
 }
